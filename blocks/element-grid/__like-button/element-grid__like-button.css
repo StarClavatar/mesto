@@ -5,10 +5,10 @@
     width: 22px;
     border: none;
     padding: 0;
-    transition: 0.8s;
     cursor: pointer;
+    transition: 0.2s;
   }
   
-  .element-grid__like:hover{
+  .element-grid__like-button:hover{
     opacity: 0.5;
   }
