@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="vendor/normalize.css">
+    <link rel="stylesheet" href="pages/index.css">
+    <title>Mesto Russia</title>
+</head>
+
+<body class="page">
+    <header class="header">
+        <img src="./images/Vector.svg" alt="логотип" class="header__logo">
+    </header>
+    <main class="content">
+        <section class="profile">
+            <img src="./images/image.png" alt="аватар" class="profile__avatar">
+            <div class="profile__info">
+                <div class="profile__info-name">
+                    <h1 class="profile__title">Жак-Ив Кусто</h1>
+                    <button type="button" class="profile__button profile__button_type_edit"
+                        title="Редактировать профиль" aria-label="Редактировать профиль"></button>
+                </div>
+                <p class="profile__short-description">Исследователь океана</p>
+            </div>
+            <button type="button" class="profile__button profile__button_type_add" title="Добавить фото"
+                aria-label="Добавить фото"></button>
+        </section>
+        <section class="elements-grid">
+            <ul class="element-grid">
+                <li class="element-grid__item">
+                    <img class="element-grid__image" src="./images/XinCun.jpg" alt="Изображение города Синьцунь, остров Хайнань">
+                    <div class="element-grid__info">
+                        <h2 class="element-grid__title">Xincun, Hainan</h2>
+                        <button class="element-grid__like-button" type="button"></button>
+                    </div>
+                </li>
+                <li class="element-grid__item">
+                    <img class="element-grid__image" src="./images/TheRomanticPark.jpg" alt="Изображение Парка романтик парк">
+                    <div class="element-grid__info">
+                        <h2 class="element-grid__title">The Romantic Park</h2>
+                        <button class="element-grid__like-button" type="button"></button>
+                    </div>
+                </li>
+                <li class="element-grid__item">
+                    <img class="element-grid__image" src="./images/theLostChambersAquarium.jpg" alt="город для рыб в аквариуме">
+                    <div class="element-grid__info">
+                        <h2 class="element-grid__title">The Lost Chambers Aquarium</h2>
+                        <button class="element-grid__like-button" type="button"></button>
+                    </div>
+                </li>
+                <li class="element-grid__item">
+                    <img class="element-grid__image" src="./images/TheRomanticPark2.jpg" alt="Изображение Парка романтик парк">
+                    <div class="element-grid__info">
+                        <h2 class="element-grid__title">The Romantic Park</h2>
+                        <button class="element-grid__like-button" type="button"></button>
+                    </div>
+                </li>
+                <li class="element-grid__item">
+                    <img class="element-grid__image" src="./images/parkYanoda.jpg" alt="Парк заповедник Янода, девушка сфотографированна со спины на фоне деревьев">
+                    <div class="element-grid__info">
+                        <h2 class="element-grid__title">Yanoda park</h2>
+                        <button class="element-grid__like-button" type="button"></button>
+                    </div>
+                </li>
+                <li class="element-grid__item">
+                    <img class="element-grid__image" src="./images/kama.jpeg" alt="портретное фото Кама пуля">
+                    <div class="element-grid__info">
+                        <h2 class="element-grid__title">Гангстер со стажем</h2>
+                        <button class="element-grid__like-button" type="button"></button>
+                    </div>
+                </li>
+            </ul>
+        </section>
+    </main>
+    <footer class="footer">
+        <p class="footer__copyright">© 2020 Mesto Russia</p>
+    </footer>
+
+    <div class="popup">
+        <div class="popup__container">
+            <form class="popup__input-form" name="popupForm">
+                <h2 class="popup__title">Редактировать профиль</h2>
+                <input class="popup__input popup__input_edit_title" name="username" type="text" placeholder="Имя"
+                    required>
+                <input class="popup__input popup__input_edit_short-description" name="about" type="text"
+                    placeholder="Описание" required>
+                <button class="popup__save-button" type="submit">Сохранить</button>
+            </form>
+            <button type="button" class="popup__close-button"></button>
+        </div>
+        <script src="./scripts/script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,18 @@
+.popup__save-button {
+    width: 100%;
+    background-color: black;
+    border: 0;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 22px;
+    text-align: center;
+    min-height: 50px;
+    color: #FFFFFF;
+    transition: 0.2s;
+    border-radius: 2px;
+}
+
+.popup__save-button:hover {
+    opacity: 0.8;
+}

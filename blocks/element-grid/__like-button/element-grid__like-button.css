@@ -1,0 +1,14 @@
+.element-grid__like-button{
+    background-image: url('../../../images/like.svg');
+    background-color: transparent;
+    height: 19px;
+    width: 22px;
+    border: none;
+    padding: 0;
+    transition: 0.8s;
+    cursor: pointer;
+  }
+  
+  .element-grid__like:hover{
+    opacity: 0.5;
+  }
