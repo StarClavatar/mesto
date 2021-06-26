@@ -10,3 +10,8 @@
         height: 18px;
     }
 }
+@media screen and (max-width: 579px) {
+    .profile__button_type_edit {
+        background-size: 7.5px 7.5px;
+    }
+}
