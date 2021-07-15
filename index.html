@@ -29,48 +29,16 @@
         </section>
         <section class="elements-grid">
             <ul class="element-grid">
-                <li class="element-grid__item">
-                    <img class="element-grid__image" src="./images/XinCun.jpg" alt="Изображение города Синьцунь, остров Хайнань">
-                    <div class="element-grid__info">
-                        <h2 class="element-grid__title">Xincun, Hainan</h2>
-                        <button class="element-grid__like-button" type="button"></button>
-                    </div>
-                </li>
-                <li class="element-grid__item">
-                    <img class="element-grid__image" src="./images/TheRomanticPark.jpg" alt="Изображение Парка романтик парк">
-                    <div class="element-grid__info">
-                        <h2 class="element-grid__title">The Romantic Park</h2>
-                        <button class="element-grid__like-button" type="button"></button>
-                    </div>
-                </li>
-                <li class="element-grid__item">
-                    <img class="element-grid__image" src="./images/theLostChambersAquarium.jpg" alt="город для рыб в аквариуме">
-                    <div class="element-grid__info">
-                        <h2 class="element-grid__title">The Lost Chambers Aquarium</h2>
-                        <button class="element-grid__like-button" type="button"></button>
-                    </div>
-                </li>
-                <li class="element-grid__item">
-                    <img class="element-grid__image" src="./images/TheRomanticPark2.jpg" alt="Изображение Парка романтик парк">
-                    <div class="element-grid__info">
-                        <h2 class="element-grid__title">The Romantic Park</h2>
-                        <button class="element-grid__like-button" type="button"></button>
-                    </div>
-                </li>
-                <li class="element-grid__item">
-                    <img class="element-grid__image" src="./images/parkYanoda.jpg" alt="Парк заповедник Янода, девушка сфотографированна со спины на фоне деревьев">
-                    <div class="element-grid__info">
-                        <h2 class="element-grid__title">Yanoda park</h2>
-                        <button class="element-grid__like-button" type="button"></button>
-                    </div>
-                </li>
-                <li class="element-grid__item">
-                    <img class="element-grid__image" src="./images/kama.jpeg" alt="портретное фото Кама пуля">
-                    <div class="element-grid__info">
-                        <h2 class="element-grid__title">Гангстер со стажем</h2>
-                        <button class="element-grid__like-button" type="button"></button>
-                    </div>
-                </li>
+                <template id="element-grid-template">
+                    <li class="element-grid__item">
+                        <img class="element-grid__image" src="./images/kama.jpeg" alt="">
+                        <div class="element-grid__info">
+                            <h2 class="element-grid__title">Гангстер со стажем</h2>
+                            <button class="element-grid__like-button" type="button"></button>
+                        </div>
+                        <button class="element-grid__remove-button" type="button"></button>
+                    </li>
+                </template>
             </ul>
         </section>
     </main>
@@ -91,6 +59,16 @@
             <button type="button" class="popup__close-button"></button>
         </div>
     </div>
+
+    <div class="popup popup__zoom-image">
+        <figure class="popup__image-container">
+            <img class="popup__image" src="" alt="">
+            <figcaption class="popup__image-caption"></figcaption>
+            <button class="popup__close-button popup__close-button_place-image" type="button"></button>
+        </figure>
+    </div>
+
     <script src="./scripts/script.js"></script>
 </body>
+
 </html>
