@@ -89,7 +89,7 @@ let saveInputText = function(save) {
     closePopup()
 }
 function cardLike () {
-likeButton.classList.toggle('element-grid__like-button_active')
+    likeButton.classList.toggle('element-grid__like-button_active')
 }
 
 function createNewPhoto (photoName, link) {
@@ -100,27 +100,26 @@ function createNewPhoto (photoName, link) {
     newCard.querySelector('.element-grid__image').src = link
     newCard.querySelector('.element-grid__image').alt = photoName
     
-    newCard.querySelector('.element-grid__remove-button').addEventListener('click', function(e){
-        e.target.closest('.element-grid__item').remove();
-    })
+    // newCard.querySelector('.element-grid__remove-button').addEventListener('click', function(e){
+    //     e.target.closest('.element-grid__item').remove();
+    // })
 
-    newCard.querySelector('.element-grid__like-button').addEventListener('click', function(e){
-        e.target.classList.toggle('element-grid__like-button_active');
-    })
+    // newCard.querySelector('.element-grid__like-button').addEventListener('click', function(e){
+    //     e.target.classList.toggle('element-grid__like-button_active');
+    // })
 
-    newCard.querySelector('.element-grid__image').addEventListener('click', function(e){
-        document.querySelector('.popup__image').src = e.target.src
-        document.querySelector('.popup__image-caption').textContent = photoName
-        document.querySelector('.popup_zoom-image').style.visibility = 'visible'
+    // newCard.querySelector('.element-grid__image').addEventListener('click', function(e){
+    //     document.querySelector('.popup__image').src = e.target.src
+    //     document.querySelector('.popup__image-caption').textContent = photoName
+    //     document.querySelector('.popup_zoom-image').style.visibility = 'visible'
         
-    })
+    // })
 
     document.querySelector('.element-grid').prepend(newCard)
 }
 
 document.querySelector('.popup__close-button_place-image').addEventListener('click', function(){
-    document.querySelector('.popup_zoom-image').style.visibility = 'hidden'
-
+    document.querySelector('.popup_zoom-image').classList.remove('popup_opened')
 })
 
 
@@ -129,22 +128,26 @@ popupAddButton.addEventListener('click', openAddPopup)
 closeButton.addEventListener('click', closePopup)
 popup.addEventListener('submit', saveInputText)
 
-//другой вариант добавления слушателей
-// function gridClicked(me){
-//    //alert (el.target)
-//    if (me.target.classList.contains('element-grid__like-button')){
-//         me.target.classList.toggle('element-grid__like-button_active');
-//     }else if(me.target.classList.contains('element-grid__remove-button')){
-//         me.target.parentElement.remove();
-//     }
-// }
+// другой вариант добавления слушателей
+function gridClicked(me){
+   //alert (el.target)
+   if (me.target.classList.contains('element-grid__like-button')){
+        me.target.classList.toggle('element-grid__like-button_active');
+    }else if(me.target.classList.contains('element-grid__remove-button')){
+        me.target.parentElement.remove();
+    }else if (me.target.classList.contains('element-grid__image')){
+        document.querySelector('.popup__image').src = me.target.src
+        document.querySelector('.popup__image-caption').textContent = me.target.parentElement.querySelector('.element-grid__title').textContent
+        document.querySelector('.popup_zoom-image').classList.add('popup_opened')
+    }
+}
 
 function cardDelete(event){
     let card = event.target.closest('.element-grid__item');
     card.remove()
 }
 
-//document.querySelector('.element-grid').addEventListener('click',gridClicked)
+document.querySelector('.element-grid').addEventListener('click',gridClicked)
 
 
 initialCards.forEach(function(el){
