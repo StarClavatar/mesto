@@ -111,7 +111,7 @@ function createNewPhoto (photoName, link) {
     newCard.querySelector('.element-grid__image').addEventListener('click', function(e){
         document.querySelector('.popup__image').src = e.target.src
         document.querySelector('.popup__image-caption').textContent = photoName
-        document.querySelector('.popup__zoom-image').style.visibility = 'visible'
+        document.querySelector('.popup_zoom-image').style.visibility = 'visible'
         
     })
 
@@ -119,7 +119,7 @@ function createNewPhoto (photoName, link) {
 }
 
 document.querySelector('.popup__close-button_place-image').addEventListener('click', function(){
-    document.querySelector('.popup__zoom-image').style.visibility = 'hidden'
+    document.querySelector('.popup_zoom-image').style.visibility = 'hidden'
 
 })
 
