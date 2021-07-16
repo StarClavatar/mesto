@@ -98,6 +98,7 @@ function createNewPhoto (photoName, link) {
     
     newCard.querySelector('.element-grid__title').textContent = photoName
     newCard.querySelector('.element-grid__image').src = link
+    newCard.querySelector('.element-grid__image').alt = photoName
     
     newCard.querySelector('.element-grid__remove-button').addEventListener('click', function(e){
         e.target.closest('.element-grid__item').remove();
