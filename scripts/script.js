@@ -25,73 +25,117 @@ const initialCards = [
     },
   ];
 
+  
+// Profile
+const profile = document.querySelector('.profile')
+const profileTitle = profile.querySelector('.profile__title')
+const profileShortDescription = profile.querySelector('.profile__short-description')
+const popupEditProfileButton = profile.querySelector('.profile__button_type_edit')
+const popupAddCardButton = profile.querySelector('.profile__button_type_add')
 
-let profile = document.querySelector('.profile')
-let profileTitle = profile.querySelector('.profile__title')
-let profileShortDescription = profile.querySelector('.profile__short-description')
+//ProfilePopup
+const popupEditProfile = document.querySelector('.popup_type_edit')
+const popupProfileTitleInput = popupEditProfile.querySelector('.popup__input_edit_title')
+const popupProfileDescriptionInput = popupEditProfile.querySelector('.popup__input_edit_short-description')
+const closeProfileButton= popupEditProfile.querySelector('.popup__close-button')
 
-let popup = document.querySelector('.popup')
-let popupHeading = document.querySelector('.popup__title')
-let editPopupTitle = popup.querySelector('.popup__input_edit_title')
-let editPopupShortDescription = popup.querySelector('.popup__input_edit_short-description')
+// AddCardPopup
+const popupAddCard = document.querySelector('.popup_type_add')
+const closeAddCardButton = popupAddCard.querySelector('.popup__close-button')
 
-let saveButton = popup.querySelector('.popup__save-button')
-let closeButton = popup.querySelector('.popup__close-button')
+// zoomImagePopup
+const popupZoomImage = document.querySelector('.popup_zoom-image')
+const closeZoomImageButton = popupZoomImage.querySelector('.popup__close-button')
 
-let popupOpenButton = profile.querySelector('.profile__button_type_edit')
-let popupAddButton = profile.querySelector('.profile__button_type_add')
+//редактирование профиля---------------------------------------------
+//заполняем и отображаем форму редактирования профиля
+popupEditProfileButton.addEventListener('click', function(){
+        // присваиваем значения полям ввода текущему значению
+        popupProfileTitleInput.value = profileTitle.textContent
+        popupProfileDescriptionInput.value = profileShortDescription.textContent
+        // отображаем поп-ап
+        openPopup(popupEditProfile)  
+})
+
+//обработка события нажатия на кнопку "сохранить" поп-апа редактирования профиля
+popupEditProfile.addEventListener('submit', function(evt){
+    //отмена перезагрузки странице при сохранении
+    evt.preventDefault()
+    //сохраняем значения
+    profileTitle.textContent = popupProfileTitleInput.value
+    profileShortDescription.textContent = popupProfileDescriptionInput.value
+    //закрываем поп-ап
+    closePopup(popupEditProfile)
+});
+
+//закрываем поп-ап редактирования профиля без сохранения
+closeProfileButton.addEventListener('click', function(){
+    closePopup(popupEditProfile)
+});
 
 
-let openPopup = function() {
+//добавление карточки, удаление, лайк и увеличение карточек-------------------------------------------------------    
+
+//отображаем поп-ап добавления новой карточки с обнулением полей ввода
+popupAddCardButton.addEventListener('click', function(){
+    popupAddCard.querySelector('.popup__input_edit_title').value = '';
+    popupAddCard.querySelector('.popup__input_edit_short-description').value = '';
+    openPopup(popupAddCard)
+});
+
+//обрабатываем событие нажатия на кнопку "сохранить" в новой карточке 
+popupAddCard.addEventListener('submit', function(evt){
+    //отмена перезагрузки странице при сохранении
+    evt.preventDefault();
+    //добавляем новую карточку
+    createNewPhoto (
+        popupAddCard.querySelector('.popup__input_edit_title').value, 
+        popupAddCard.querySelector('.popup__input_edit_short-description').value
+    )
+    //закрываем поп-ап
+    closePopup(popupAddCard)   
+})
+
+//закрываем поп-ап редактирования профиля без сохранения
+closeAddCardButton.addEventListener('click', function(){
+    closePopup(popupAddCard)
+});
+
+//функции для лайка и удаления и увеличения карточек
+function likeCard (el){
+    el.currentTarget.classList.toggle('element-grid__like-button_active')
+}
+
+// обработчик клика на кнопку удаления карточки
+function deleteCard (el) {
+    el.currentTarget.parentElement.remove()
+}
+
+//обработчик события при нажатии на карточку для увеличения
+function zoomImage (el) {
+    popupZoomImage.querySelector('.popup__image').src = el.currentTarget.src
+    popupZoomImage.querySelector('.popup__image-caption').textContent = el.currentTarget.parentElement.querySelector('.element-grid__title').textContent
+    openPopup(popupZoomImage)
+}
+
+//закрываем поп-ап увеличения картинки
+closeZoomImageButton.addEventListener('click', function(){
+    closePopup(popupZoomImage)
+});
+
+
+//вспомогательные функции------------------------------------------------
+
+function openPopup (popup) {
     popup.classList.add('popup_opened');
 }
 
-let closePopup = function() {
+function closePopup(popup) {
     popup.classList.remove('popup_opened')
 }
 
-//если isEditMode = true, то форма редактирования профиля, false - форма добавления новой картинки
-let isEditMode;
 
-let openEditPopup = function () {
-    popupHeading.textContent = 'Редактировать профиль'
-    // присваиваем значения полям ввода текущему значению
-    editPopupTitle.value = profileTitle.textContent
-    editPopupShortDescription.value = profileShortDescription.textContent
-    
-    isEditMode = true;
-    openPopup()
-}
-
-let openAddPopup = function() {
-    //меняем названия полей ввода и заголовок поп-апа
-    popupHeading.textContent = 'Новое место'
-    editPopupTitle.placeholder = 'Название'
-    editPopupShortDescription.placeholder = 'Ссылка на картинку'
-
-    editPopupTitle.value = ''
-    editPopupShortDescription.value = ''
-
-    isEditMode = false;
-
-    openPopup()
-}
-
-
-let saveInputText = function(save) {
-    save.preventDefault()
-    if (isEditMode) {
-        profileTitle.textContent = editPopupTitle.value
-        profileShortDescription.textContent = editPopupShortDescription.value
-    } else {
-        createNewPhoto(editPopupTitle.value ,editPopupShortDescription.value)
-    }
-    closePopup()
-}
-function cardLike () {
-    likeButton.classList.toggle('element-grid__like-button_active')
-}
-
+//добавляем новую карточку и подписываемся на события like, delete, zoom
 function createNewPhoto (photoName, link) {
     let gridElementTemplate = document.querySelector('#element-grid-template').content
     let newCard = gridElementTemplate.querySelector('.element-grid__item').cloneNode(true)
@@ -99,57 +143,17 @@ function createNewPhoto (photoName, link) {
     newCard.querySelector('.element-grid__title').textContent = photoName
     newCard.querySelector('.element-grid__image').src = link
     newCard.querySelector('.element-grid__image').alt = photoName
+
+    newCard.querySelector('.element-grid__like-button').addEventListener('click', likeCard)
+    newCard.querySelector('.element-grid__remove-button').addEventListener('click', deleteCard)
+    newCard.querySelector('.element-grid__image').addEventListener('click', zoomImage)
     
-    // newCard.querySelector('.element-grid__remove-button').addEventListener('click', function(e){
-    //     e.target.closest('.element-grid__item').remove();
-    // })
 
-    // newCard.querySelector('.element-grid__like-button').addEventListener('click', function(e){
-    //     e.target.classList.toggle('element-grid__like-button_active');
-    // })
-
-    // newCard.querySelector('.element-grid__image').addEventListener('click', function(e){
-    //     document.querySelector('.popup__image').src = e.target.src
-    //     document.querySelector('.popup__image-caption').textContent = photoName
-    //     document.querySelector('.popup_zoom-image').style.visibility = 'visible'
-        
-    // })
 
     document.querySelector('.element-grid').prepend(newCard)
 }
 
-document.querySelector('.popup__close-button_place-image').addEventListener('click', function(){
-    document.querySelector('.popup_zoom-image').classList.remove('popup_opened')
-})
-
-
-popupOpenButton.addEventListener('click', openEditPopup)
-popupAddButton.addEventListener('click', openAddPopup)
-closeButton.addEventListener('click', closePopup)
-popup.addEventListener('submit', saveInputText)
-
-// другой вариант добавления слушателей
-function gridClicked(me){
-   //alert (el.target)
-   if (me.target.classList.contains('element-grid__like-button')){
-        me.target.classList.toggle('element-grid__like-button_active');
-    }else if(me.target.classList.contains('element-grid__remove-button')){
-        me.target.parentElement.remove();
-    }else if (me.target.classList.contains('element-grid__image')){
-        document.querySelector('.popup__image').src = me.target.src
-        document.querySelector('.popup__image-caption').textContent = me.target.parentElement.querySelector('.element-grid__title').textContent
-        document.querySelector('.popup_zoom-image').classList.add('popup_opened')
-    }
-}
-
-function cardDelete(event){
-    let card = event.target.closest('.element-grid__item');
-    card.remove()
-}
-
-document.querySelector('.element-grid').addEventListener('click',gridClicked)
-
-
+//создаём стартовый набор карточек из массива
 initialCards.forEach(function(el){
     createNewPhoto(el.name, el.link)
 })
