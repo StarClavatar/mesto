@@ -25,19 +25,23 @@ const initialCards = [
     },
   ];
 
-  
-// Profile
-const profile = document.querySelector('.profile')
-const profileTitle = profile.querySelector('.profile__title')
-const profileShortDescription = profile.querySelector('.profile__short-description')
-const popupEditProfileButton = profile.querySelector('.profile__button_type_edit')
-const popupAddCardButton = profile.querySelector('.profile__button_type_add')
 
-//ProfilePopup
-const popupEditProfile = document.querySelector('.popup_type_edit')
-const popupProfileTitleInput = popupEditProfile.querySelector('.popup__input_edit_title')
-const popupProfileDescriptionInput = popupEditProfile.querySelector('.popup__input_edit_short-description')
-const closeProfileButton= popupEditProfile.querySelector('.popup__close-button')
+  
+  // Profile
+  const profile = document.querySelector('.profile')
+  const profileTitle = profile.querySelector('.profile__title')
+  const profileShortDescription = profile.querySelector('.profile__short-description')
+  const popupEditProfileButton = profile.querySelector('.profile__button_type_edit')
+  const popupAddCardButton = profile.querySelector('.profile__button_type_add')
+  
+  //ProfilePopup
+  const popupEditProfile = document.querySelector('.popup_type_edit')
+  const popupProfileTitleInput = popupEditProfile.querySelector('.popup__input_edit_title')
+  const popupProfileDescriptionInput = popupEditProfile.querySelector('.popup__input_edit_short-description')
+  const closeProfileButton= popupEditProfile.querySelector('.popup__close-button')
+
+  //elements grid
+ const elementGrid = document.querySelector('.element-grid')
 
 // AddCardPopup
 const popupAddCard = document.querySelector('.popup_type_add')
@@ -87,11 +91,16 @@ popupAddCardButton.addEventListener('click', function(){
 popupAddCard.addEventListener('submit', function(evt){
     //отмена перезагрузки странице при сохранении
     evt.preventDefault();
-    //добавляем новую карточку
-    createNewPhoto (
+    //создаём новую карточку из шаблона
+    const newCard = createNewPhoto (
         popupAddCard.querySelector('.popup__input_edit_title').value, 
-        popupAddCard.querySelector('.popup__input_edit_short-description').value
-    )
+        popupAddCard.querySelector('.popup__input_edit_short-description').value)
+    //подписываемся на события новой карточки
+    newCard.querySelector('.element-grid__like-button').addEventListener('click', likeCard)
+    newCard.querySelector('.element-grid__remove-button').addEventListener('click', deleteCard)
+    newCard.querySelector('.element-grid__image').addEventListener('click', zoomImage)
+    //добавляем новую карточку
+    elementGrid.prepend(newCard)
     //закрываем поп-ап
     closePopup(popupAddCard)   
 })
@@ -114,8 +123,10 @@ function deleteCard (el) {
 //обработчик события при нажатии на карточку для увеличения
 function zoomImage (el) {
     popupZoomImage.querySelector('.popup__image').src = el.currentTarget.src
+    popupZoomImage.querySelector('.popup__image').alt = el.currentTarget.alt 
     popupZoomImage.querySelector('.popup__image-caption').textContent = el.currentTarget.parentElement.querySelector('.element-grid__title').textContent
     openPopup(popupZoomImage)
+
 }
 
 //закрываем поп-ап увеличения картинки
@@ -137,26 +148,25 @@ function closePopup(popup) {
 
 //добавляем новую карточку и подписываемся на события like, delete, zoom
 function createNewPhoto (photoName, link) {
-    let gridElementTemplate = document.querySelector('#element-grid-template').content
+    let gridElementTemplate = elementGrid.querySelector('#element-grid-template').content
     let newCard = gridElementTemplate.querySelector('.element-grid__item').cloneNode(true)
     
     newCard.querySelector('.element-grid__title').textContent = photoName
     newCard.querySelector('.element-grid__image').src = link
     newCard.querySelector('.element-grid__image').alt = photoName
 
-    newCard.querySelector('.element-grid__like-button').addEventListener('click', likeCard)
-    newCard.querySelector('.element-grid__remove-button').addEventListener('click', deleteCard)
-    newCard.querySelector('.element-grid__image').addEventListener('click', zoomImage)
-    
-
-
-    document.querySelector('.element-grid').prepend(newCard)
+    return newCard
 }
 
 //создаём стартовый набор карточек из массива
 initialCards.forEach(function(el){
-    createNewPhoto(el.name, el.link)
-})
+    const newCard = createNewPhoto(el.name, el.link)
 
+    newCard.querySelector('.element-grid__like-button').addEventListener('click', likeCard)
+    newCard.querySelector('.element-grid__remove-button').addEventListener('click', deleteCard)
+    newCard.querySelector('.element-grid__image').addEventListener('click', zoomImage)
+
+    elementGrid.prepend(newCard)
+})
 
 
