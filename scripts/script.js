@@ -25,23 +25,22 @@ const initialCards = [
     },
   ];
 
-
   
   // Profile
-  const profile = document.querySelector('.profile')
-  const profileTitle = profile.querySelector('.profile__title')
-  const profileShortDescription = profile.querySelector('.profile__short-description')
-  const popupEditProfileButton = profile.querySelector('.profile__button_type_edit')
-  const popupAddCardButton = profile.querySelector('.profile__button_type_add')
+const profile = document.querySelector('.profile')
+const profileTitle = profile.querySelector('.profile__title')
+const profileShortDescription = profile.querySelector('.profile__short-description')
+const popupEditProfileButton = profile.querySelector('.profile__button_type_edit')
+const popupAddCardButton = profile.querySelector('.profile__button_type_add')
   
-  //ProfilePopup
-  const popupEditProfile = document.querySelector('.popup_type_edit')
-  const popupProfileTitleInput = popupEditProfile.querySelector('.popup__input_edit_title')
-  const popupProfileDescriptionInput = popupEditProfile.querySelector('.popup__input_edit_short-description')
-  const closeProfileButton= popupEditProfile.querySelector('.popup__close-button')
+//ProfilePopup
+const popupEditProfile = document.querySelector('.popup_type_edit')
+const popupProfileTitleInput = popupEditProfile.querySelector('.popup__input_edit_title')
+const popupProfileDescriptionInput = popupEditProfile.querySelector('.popup__input_edit_short-description')
+const closeProfileButton= popupEditProfile.querySelector('.popup__close-button')
 
-  //elements grid
- const elementGrid = document.querySelector('.element-grid')
+//elements grid
+const elementGrid = document.querySelector('.element-grid')
 
 // AddCardPopup
 const popupAddCard = document.querySelector('.popup_type_add')
@@ -91,14 +90,11 @@ popupAddCardButton.addEventListener('click', function(){
 popupAddCard.addEventListener('submit', function(evt){
     //отмена перезагрузки странице при сохранении
     evt.preventDefault();
-    //создаём новую карточку из шаблона
-    const newCard = createNewPhoto (
+    //добавляем новую карточку из шаблона в контейнер
+    addPhotoToContainer (
         popupAddCard.querySelector('.popup__input_edit_title').value, 
-        popupAddCard.querySelector('.popup__input_edit_short-description').value)
-    //подписываемся на события новой карточки
-    addCardListeners (newCard)
-    //добавляем новую карточку
-    elementGrid.prepend(newCard)
+        popupAddCard.querySelector('.popup__input_edit_short-description').value
+    )
     //закрываем поп-ап
     closePopup(popupAddCard)   
 })
@@ -143,31 +139,27 @@ function closePopup(popup) {
     popup.classList.remove('popup_opened')
 }
 
+function addPhotoToContainer (photoName, link) {
+    document.querySelector('.element-grid').prepend(createNewPhoto(photoName, link))
+}
 
-//добавляем новую карточку и подписываемся на события like, delete, zoom
+//создаём новую карточку из шаблона и подписываемся на события like, delete, zoom
 function createNewPhoto (photoName, link) {
     let gridElementTemplate = elementGrid.querySelector('#element-grid-template').content
     let newCard = gridElementTemplate.querySelector('.element-grid__item').cloneNode(true)
-    
+
     newCard.querySelector('.element-grid__title').textContent = photoName
     newCard.querySelector('.element-grid__image').src = link
     newCard.querySelector('.element-grid__image').alt = photoName
+    
+    newCard.querySelector('.element-grid__like-button').addEventListener('click', likeCard)
+    newCard.querySelector('.element-grid__remove-button').addEventListener('click', deleteCard)
+    newCard.querySelector('.element-grid__image').addEventListener('click', zoomImage)
 
     return newCard
 }
 
-//добавляем слушатели каждой карточек
-function addCardListeners (newCard) {
-    newCard.querySelector('.element-grid__like-button').addEventListener('click', likeCard)
-    newCard.querySelector('.element-grid__remove-button').addEventListener('click', deleteCard)
-    newCard.querySelector('.element-grid__image').addEventListener('click', zoomImage)
-}
-
 //создаём стартовый набор карточек из массива
 initialCards.forEach(function(el){
-    const newCard = createNewPhoto(el.name, el.link)
-    addCardListeners(newCard)
-    elementGrid.prepend(newCard)
+    addPhotoToContainer(el.name, el.link)
 })
-
-
