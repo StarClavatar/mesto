@@ -96,9 +96,7 @@ popupAddCard.addEventListener('submit', function(evt){
         popupAddCard.querySelector('.popup__input_edit_title').value, 
         popupAddCard.querySelector('.popup__input_edit_short-description').value)
     //подписываемся на события новой карточки
-    newCard.querySelector('.element-grid__like-button').addEventListener('click', likeCard)
-    newCard.querySelector('.element-grid__remove-button').addEventListener('click', deleteCard)
-    newCard.querySelector('.element-grid__image').addEventListener('click', zoomImage)
+    addCardListeners (newCard)
     //добавляем новую карточку
     elementGrid.prepend(newCard)
     //закрываем поп-ап
@@ -158,14 +156,17 @@ function createNewPhoto (photoName, link) {
     return newCard
 }
 
-//создаём стартовый набор карточек из массива
-initialCards.forEach(function(el){
-    const newCard = createNewPhoto(el.name, el.link)
-
+//добавляем слушатели каждой карточек
+function addCardListeners (newCard) {
     newCard.querySelector('.element-grid__like-button').addEventListener('click', likeCard)
     newCard.querySelector('.element-grid__remove-button').addEventListener('click', deleteCard)
     newCard.querySelector('.element-grid__image').addEventListener('click', zoomImage)
+}
 
+//создаём стартовый набор карточек из массива
+initialCards.forEach(function(el){
+    const newCard = createNewPhoto(el.name, el.link)
+    addCardListeners(newCard)
     elementGrid.prepend(newCard)
 })
 
