@@ -50,6 +50,11 @@ const closeAddCardButton = popupAddCard.querySelector('.popup__close-button')
 const popupZoomImage = document.querySelector('.popup_zoom-image')
 const closeZoomImageButton = popupZoomImage.querySelector('.popup__close-button')
 
+//создаём стартовый набор карточек из массива
+initialCards.forEach(function(el){
+    addPhotoToContainer(el.name, el.link)
+})
+
 //редактирование профиля---------------------------------------------
 //заполняем и отображаем форму редактирования профиля
 popupEditProfileButton.addEventListener('click', function(){
@@ -159,7 +164,4 @@ function createNewPhoto (photoName, link) {
     return newCard
 }
 
-//создаём стартовый набор карточек из массива
-initialCards.forEach(function(el){
-    addPhotoToContainer(el.name, el.link)
-})
+
