@@ -25,8 +25,7 @@ const initialCards = [
     },
   ];
 
-  
-  // Profile
+// Profile
 const profile = document.querySelector('.profile')
 const profileTitle = profile.querySelector('.profile__title')
 const profileShortDescription = profile.querySelector('.profile__short-description')
@@ -62,13 +61,13 @@ popupEditProfileButton.addEventListener('click', function(){
         popupProfileTitleInput.value = profileTitle.textContent
         popupProfileDescriptionInput.value = profileShortDescription.textContent
         // отображаем поп-ап
-        openPopup(popupEditProfile)  
+        openPopup(popupEditProfile)
 })
 
 //обработка события нажатия на кнопку "сохранить" поп-апа редактирования профиля
 popupEditProfile.addEventListener('submit', function(evt){
     //отмена перезагрузки странице при сохранении
-    evt.preventDefault()
+    //evt.preventDefault()
     //сохраняем значения
     profileTitle.textContent = popupProfileTitleInput.value
     profileShortDescription.textContent = popupProfileDescriptionInput.value
@@ -96,7 +95,7 @@ popupAddCard.addEventListener('submit', function(evt){
     //отмена перезагрузки странице при сохранении
     evt.preventDefault();
     //добавляем новую карточку из шаблона в контейнер
-    addPhotoToContainer (
+    addPhotoToContainer(
         popupAddCard.querySelector('.popup__input_edit_title').value, 
         popupAddCard.querySelector('.popup__input_edit_short-description').value
     )
@@ -133,15 +132,38 @@ closeZoomImageButton.addEventListener('click', function(){
     closePopup(popupZoomImage)
 });
 
+//закрытие поп-апа по нажатию клавиши escape
+function closePopupByEscButton(event) {
+    if(event.key === 'Escape') {
+        const currentPopup = document.querySelector('.popup_opened')
+        closePopup(currentPopup)
+    }
+}
+
+
+//закрытие поп-апа по клику на фон
+function closePopupByBackgroundClick(event){
+    if(event.target === event.currentTarget){
+        const currentPopup = document.querySelector('.popup_opened')
+        closePopup(currentPopup)
+    }
+}
+
 
 //вспомогательные функции------------------------------------------------
 
 function openPopup (popup) {
-    popup.classList.add('popup_opened');
+    popup.addEventListener('click', closePopupByBackgroundClick)
+    document.addEventListener('keydown', closePopupByEscButton)
+    popup.classList.add('popup_opened')
+    if (popup!=popupZoomImage) checkValidation ();
 }
 
 function closePopup(popup) {
+    popup.removeEventListener('click', closePopupByBackgroundClick)
+    document.removeEventListener('keydown', closePopupByEscButton)
     popup.classList.remove('popup_opened')
+
 }
 
 function addPhotoToContainer (photoName, link) {
@@ -160,8 +182,6 @@ function createNewPhoto (photoName, link) {
     newCard.querySelector('.element-grid__like-button').addEventListener('click', likeCard)
     newCard.querySelector('.element-grid__remove-button').addEventListener('click', deleteCard)
     newCard.querySelector('.element-grid__image').addEventListener('click', zoomImage)
-
+    
     return newCard
 }
-
-

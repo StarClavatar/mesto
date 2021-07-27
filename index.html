@@ -48,26 +48,30 @@
 
     <div class="popup popup_type_edit" >
         <div class="popup__container">
-            <form class="popup__input-form" name="popupForm">
+            <form class="popup__input-form popup__form" name="edit-form" novalidate>
                 <h2 class="popup__title">Редактировать профиль</h2>
-                <input class="popup__input popup__input_edit_title" name="username" type="text" placeholder="Имя"
-                    required>
-                <input class="popup__input popup__input_edit_short-description" name="about" type="text"
-                    placeholder="Описание" required>
-                <button class="popup__save-button" type="submit">Сохранить</button>
+                <input class="popup__input popup__input_edit_title popup__input_error" id="name-input" name="username" type="text" placeholder="Имя"
+                    required minlength="2" maxlength="40">
+                    <span class="popup__input-error" id="name-input-error">ошибка заполнения</span>
+                <input class="popup__input popup__input_edit_short-description popup__input_error" id="job-input" name="about" type="text"
+                    placeholder="Описание" required minlength="2" maxlength="200">
+                    <span class="popup__input-error" id="job-input-error">ошибка заполнения</span>
+                <button class="popup__button popup__submit-button" type="submit">Сохранить</button>
             </form>
             <button type="button" class="popup__close-button"></button>
         </div>
     </div>
     <div class="popup popup_type_add">
         <div class="popup__container">
-            <form class="popup__input-form" name="popupForm">
+            <form class="popup__input-form popup__form" name="edit-form" novalidate>
                 <h2 class="popup__title">Новое место</h2>
-                <input class="popup__input popup__input_edit_title" name="name" type="text" placeholder="Название места"
-                    required>
-                <input class="popup__input popup__input_edit_short-description" name="link" type="url"
+                <input class="popup__input popup__input_edit_title popup__input_error" id="place-name-input" name="name" type="text" placeholder="Название места"
+                    required minlength="2" maxlength="30">
+                    <span class="popup__input-error" id="place-name-input-error">ошибка заполнения</span>
+                <input class="popup__input popup__input_edit_short-description popup__input_error" id="place-img-input" name="link" type="url"
                     placeholder="Ссылка на картинку" required>
-                <button class="popup__save-button" type="submit">Сохранить</button>
+                    <span class="popup__input-error" id="place-img-input-error">ошибка заполнения</span>
+                <button class="popup__button popup__submit-button" type="submit">Сохранить</button>
             </form>
             <button type="button" class="popup__close-button"></button>
         </div>
@@ -82,6 +86,7 @@
     </div>
 
     <script src="./scripts/script.js"></script>
+    <script src="./scripts/validate.js"></script>
 </body>
 
 </html>
