@@ -1,6 +1,3 @@
-
-
-
 //запускаем проверку валидности для открытых поп-апов и выполняем подписку на ввод в input'ы
 function checkValidation(){
     enableValidation({
@@ -12,7 +9,6 @@ function checkValidation(){
         errorClass: 'popup__input-error_visible'
     }); 
 }
-
 
 //пробегаемся по массиву открытых форм, подписываемся на события и выполняем проверку валидности
 function enableValidation({formSelector, inputSelector, submitButtonSelector, inactiveButtonClass, inputErrorClass, errorClass}) { 
@@ -53,18 +49,18 @@ function toggleButtonState (inputList, buttonElement, inactiveButtonClass) {
         buttonElement.disabled = false; 
     } 
     
-    // проверка валидности поля
-    function isValid (form, input, inputErrorClass, errorClass) { 
-        if (!input.validity.valid) { 
-          // Если поле не валидно - показывает ошибку 
-          showInputError(form, input, input.validationMessage, inputErrorClass, errorClass); 
-        } else { 
-          // Если валидно - скроем 
-          hideInputError(form, input, inputErrorClass, errorClass); 
-        } 
-    }
 }
 
+// проверка валидности поля
+function isValid (form, input, inputErrorClass, errorClass) { 
+    if (!input.validity.valid) { 
+      // Если поле не валидно - показывает ошибку 
+      showInputError(form, input, input.validationMessage, inputErrorClass, errorClass); 
+    } else { 
+      // Если валидно - скроем 
+      hideInputError(form, input, inputErrorClass, errorClass); 
+    } 
+}
 
 //функция возвращает любой невалидный input
 function hasInvalidInput (inputList) { 
@@ -91,3 +87,6 @@ function hideInputError (form, input, inputErrorClass, errorClass) {
     formError.classList.remove(errorClass); 
     formError.textContent = ''; 
 }
+
+
+
