@@ -1,3 +1,6 @@
+
+
+
 //запускаем проверку валидности для открытых поп-апов и выполняем подписку на ввод в input'ы
 function checkValidation(){
     enableValidation({
