@@ -1,14 +1,18 @@
 //запускаем проверку валидности для открытых поп-апов и выполняем подписку на ввод в input'ы
 function checkValidation(){
-    enableValidation({
-        formSelector: '.popup_opened',
-        inputSelector: '.popup__input',
-        submitButtonSelector: '.popup__button',
-        inactiveButtonClass: 'popup__button_disabled',
-        inputErrorClass: 'popup__input_type_error',
-        errorClass: 'popup__input-error_visible'
-    }); 
+    toggleButtonState(inputList, buttonElement, inactiveButtonClass); 
+    isValid(form, input, inputErrorClass, errorClass); 
 }
+
+//подписываемся на input'ы и submit'ы поп-апов
+enableValidation({
+    formSelector: 'form',
+    inputSelector: '.popup__input',
+    submitButtonSelector: '.popup__button',
+    inactiveButtonClass: 'popup__button_disabled',
+    inputErrorClass: 'popup__input_type_error',
+    errorClass: 'popup__input-error_visible'
+}); 
 
 //пробегаемся по массиву открытых форм, подписываемся на события и выполняем проверку валидности
 function enableValidation({formSelector, inputSelector, submitButtonSelector, inactiveButtonClass, inputErrorClass, errorClass}) { 
@@ -27,14 +31,12 @@ function enableValidation({formSelector, inputSelector, submitButtonSelector, in
 function setEventListeners (form, inputSelector, submitButtonSelector, inactiveButtonClass, inputErrorClass, errorClass) { 
     const inputList = Array.from(form.querySelectorAll(inputSelector)); 
     const buttonElement = form.querySelector(submitButtonSelector); 
-    
-    toggleButtonState(inputList, buttonElement, inactiveButtonClass); 
+
     inputList.forEach((input) => { 
         input.addEventListener('input', () => { 
             isValid(form, input, inputErrorClass, errorClass); 
             toggleButtonState(inputList, buttonElement, inactiveButtonClass); 
         })
-        isValid(form, input, inputErrorClass, errorClass); 
     }); 
 }
 

@@ -44,11 +44,16 @@ const elementGrid = document.querySelector('.element-grid')
 
 // AddCardPopup
 const popupAddCard = document.querySelector('.popup_type_add')
+const popupTitleInput = popupAddCard.querySelector('.popup__input_edit_title')
+const popupPhotoLinkInput = popupAddCard.querySelector('.popup__input_edit_short-description')
 const closeAddCardButton = popupAddCard.querySelector('.popup__close-button')
+const popupAddCardSubmitButton = popupAddCard.querySelector('.popup__submit-button')
 
 // zoomImagePopup
 const popupZoomImage = document.querySelector('.popup_zoom-image')
 const closeZoomImageButton = popupZoomImage.querySelector('.popup__close-button')
+const popupZoomImageImg = popupZoomImage.querySelector('.popup__image')
+const popupZoomImageCaption = popupZoomImage.querySelector('.popup__image-caption')
 
 //создаём стартовый набор карточек из массива
 initialCards.forEach(function(el){
@@ -63,6 +68,8 @@ popupEditProfileButton.addEventListener('click', function(){
         popupProfileDescriptionInput.value = profileShortDescription.textContent
         // отображаем поп-ап
         openPopup(popupEditProfile)
+        //запускаем валидацию 
+        //checkValidation ();
 })
 
 //обработка события нажатия на кнопку "сохранить" поп-апа редактирования профиля
@@ -86,9 +93,14 @@ closeProfileButton.addEventListener('click', function(){
 
 //отображаем поп-ап добавления новой карточки с обнулением полей ввода
 popupAddCardButton.addEventListener('click', function(){
-    popupAddCard.querySelector('.popup__input_edit_title').value = '';
-    popupAddCard.querySelector('.popup__input_edit_short-description').value = '';
-    openPopup(popupAddCard)
+    //сбрасываем значения инпутов
+    popupTitleInput.value = '';
+    popupPhotoLinkInput.value = '';
+    //дизейблим кнопку
+    popupAddCardSubmitButton.classList.add('popup__button_disabled'); 
+    popupAddCardSubmitButton.disabled = true; 
+    //отображаем форму
+    openPopup(popupAddCard);    
 });
 
 //обрабатываем событие нажатия на кнопку "сохранить" в новой карточке 
@@ -97,8 +109,8 @@ popupAddCard.addEventListener('submit', function(evt){
     evt.preventDefault();
     //добавляем новую карточку из шаблона в контейнер
     addPhotoToContainer(
-        popupAddCard.querySelector('.popup__input_edit_title').value, 
-        popupAddCard.querySelector('.popup__input_edit_short-description').value
+        popupTitleInput.value, 
+        popupPhotoLinkInput.value
     )
     //закрываем поп-ап
     closePopup(popupAddCard)   
@@ -120,12 +132,11 @@ function deleteCard (el) {
 }
 
 //обработчик события при нажатии на карточку для увеличения
-function zoomImage (el) {
-    popupZoomImage.querySelector('.popup__image').src = el.currentTarget.src
-    popupZoomImage.querySelector('.popup__image').alt = el.currentTarget.alt 
-    popupZoomImage.querySelector('.popup__image-caption').textContent = el.currentTarget.parentElement.querySelector('.element-grid__title').textContent
+function zoomImage (photoName, link) {
+    popupZoomImageImg.src = link
+    popupZoomImageImg.alt = photoName
+    popupZoomImageCaption.textContent = photoName
     openPopup(popupZoomImage)
-
 }
 
 //закрываем поп-ап увеличения картинки
@@ -145,8 +156,7 @@ function closePopupByEscButton(event) {
 //закрытие поп-апа по клику на фон
 function closePopupByBackgroundClick(event){
     if(event.target === event.currentTarget){
-        const currentPopup = document.querySelector('.popup_opened')
-        closePopup(currentPopup)
+        closePopup(event.target)
     }
 }
 
@@ -157,7 +167,6 @@ function openPopup (popup) {
     popup.addEventListener('click', closePopupByBackgroundClick)
     document.addEventListener('keydown', closePopupByEscButton)
     popup.classList.add('popup_opened')
-    if (popup!=popupZoomImage) checkValidation ();
 }
 
 function closePopup(popup) {
@@ -173,16 +182,17 @@ function addPhotoToContainer (photoName, link) {
 
 //создаём новую карточку из шаблона и подписываемся на события like, delete, zoom
 function createNewPhoto (photoName, link) {
-    let gridElementTemplate = elementGrid.querySelector('#element-grid-template').content
-    let newCard = gridElementTemplate.querySelector('.element-grid__item').cloneNode(true)
+    const gridElementTemplate = elementGrid.querySelector('#element-grid-template').content
+    const newCard = gridElementTemplate.querySelector('.element-grid__item').cloneNode(true)
+    const gridImage = newCard.querySelector('.element-grid__image')
 
     newCard.querySelector('.element-grid__title').textContent = photoName
-    newCard.querySelector('.element-grid__image').src = link
-    newCard.querySelector('.element-grid__image').alt = photoName
+    gridImage.src = link
+    gridImage.alt = photoName
     
     newCard.querySelector('.element-grid__like-button').addEventListener('click', likeCard)
     newCard.querySelector('.element-grid__remove-button').addEventListener('click', deleteCard)
-    newCard.querySelector('.element-grid__image').addEventListener('click', zoomImage)
+    gridImage.addEventListener('click', () => zoomImage(photoName, link))
     
     return newCard
 }
