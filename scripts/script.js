@@ -68,8 +68,6 @@ popupEditProfileButton.addEventListener('click', function(){
         popupProfileDescriptionInput.value = profileShortDescription.textContent
         // отображаем поп-ап
         openPopup(popupEditProfile)
-        //запускаем валидацию 
-        //checkValidation ();
 })
 
 //обработка события нажатия на кнопку "сохранить" поп-апа редактирования профиля
@@ -96,9 +94,11 @@ popupAddCardButton.addEventListener('click', function(){
     //сбрасываем значения инпутов
     popupTitleInput.value = '';
     popupPhotoLinkInput.value = '';
+    //const inputs=[popupTitleInput, popupPhotoLinkInput]
     //дизейблим кнопку
-    popupAddCardSubmitButton.classList.add('popup__button_disabled'); 
-    popupAddCardSubmitButton.disabled = true; 
+    toggleButtonState([popupTitleInput, popupPhotoLinkInput], popupAddCardSubmitButton, 'popup__button_disabled')
+    // popupAddCardSubmitButton.classList.add('popup__button_disabled'); 
+    // popupAddCardSubmitButton.disabled = true; 
     //отображаем форму
     openPopup(popupAddCard);    
 });
