@@ -94,13 +94,10 @@ popupAddCardButton.addEventListener('click', function(){
     //сбрасываем значения инпутов
     popupTitleInput.value = '';
     popupPhotoLinkInput.value = '';
-    //const inputs=[popupTitleInput, popupPhotoLinkInput]
     //дизейблим кнопку
     toggleButtonState([popupTitleInput, popupPhotoLinkInput], popupAddCardSubmitButton, 'popup__button_disabled')
-    // popupAddCardSubmitButton.classList.add('popup__button_disabled'); 
-    // popupAddCardSubmitButton.disabled = true; 
     //отображаем форму
-    openPopup(popupAddCard);    
+    openPopup(popupAddCard);
 });
 
 //обрабатываем событие нажатия на кнопку "сохранить" в новой карточке 
