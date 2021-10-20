@@ -1,13 +1,9 @@
-//импортируем из script.js необходимые функции
-import {
-    zoomImage
-} from "./index.js";
-
 export class Card {
-    constructor(data, templateSelector) {
+    constructor(data, templateSelector, zoomImageFunct) {
         this._name = data.name
         this._link = data.link
         this._templateSelector = templateSelector
+        this._zoomImageFunct = zoomImageFunct
     }
 
     _getTemplate() {
@@ -69,12 +65,14 @@ export class Card {
 
     // обработчик клика на кнопку удаления карточки
     _deleteCard(el) {
-        el.currentTarget.parentElement.remove()
+        this._element.remove();
+        this._element = null;
     }
 
     //обработчик события при нажатии на карточку для увеличения
     _zoomImage(photoName, link) {
-        zoomImage(this._name, this._link)
+        // zoomImage(this._name, this._link)
+        this._zoomImageFunct(this._name, this._link)
     }
 
 }

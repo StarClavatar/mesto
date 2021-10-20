@@ -33,6 +33,8 @@ export class FormValidator {
         });
         // подписываемся на события ввода текста во все imput'ы 
         this._setEventListeners();
+        // выставляем состояние кнопки Submit
+        this._toggleButtonState();
     }
 
 

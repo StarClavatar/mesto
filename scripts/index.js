@@ -7,32 +7,9 @@ import {
     FormValidator
 } from './FormValidator.js';
 
-//массив стандартного набора карточек, которые должны загружаться с сервера
-const initialCards = [{
-        name: 'Xincun, Hainan',
-        link: './images/XinCun.jpg'
-    },
-    {
-        name: 'The Romantic Park',
-        link: './images/TheRomanticPark.jpg'
-    },
-    {
-        name: 'The Lost Chambers Aquarium',
-        link: './images/theLostChambersAquarium.jpg'
-    },
-    {
-        name: 'The Romantic Park',
-        link: './images/TheRomanticPark2.jpg'
-    },
-    {
-        name: 'Yanoda park',
-        link: './images/parkYanoda.jpg'
-    },
-    {
-        name: 'Гангстер со стажем',
-        link: './images/kama.jpeg'
-    },
-];
+import {
+    initialCards
+} from './cards_data.js';
 
 // объект с настройками валидации
 const validationData = {
@@ -43,6 +20,7 @@ const validationData = {
     errorClass: 'popup__input-error_visible'
 }
 
+// ID шаблона новой фото
 const newCardTemplateId = '#element-grid-template'
 
 // Profile
@@ -77,15 +55,17 @@ const popupZoomImageImg = popupZoomImage.querySelector('.popup__image')
 const popupZoomImageCaption = popupZoomImage.querySelector('.popup__image-caption')
 
 // объект для валидации формочки редактирования профиля
-let editProfileValidation
+const editProfileValidation = new FormValidator(validationData, popupEditProfileForm);
+editProfileValidation.enableValidation();
 
 // объект для валидации формочки добавления новой фото
-let newPhotoValidation
+const newPhotoValidation = new FormValidator(validationData, popupAddCardForm);
+newPhotoValidation.enableValidation();
 
 //создаём стартовый набор карточек из массива
 initialCards.forEach((el) => {
     // addPhotoToContainer(el.name, el.link)
-    const card = new Card(el, newCardTemplateId);
+    const card = new Card(el, newCardTemplateId, zoomImage);
     addPhotoToContainer(card.generateCard())
     // console.log(el)
 })
@@ -96,11 +76,6 @@ popupEditProfileButton.addEventListener('click', function () {
     // присваиваем значения полям ввода текущему значению
     popupProfileTitleInput.value = profileTitle.textContent
     popupProfileDescriptionInput.value = profileShortDescription.textContent
-    //инициализируем объект валидации если он еще не инициализирован
-    if (!editProfileValidation) {
-        editProfileValidation = new FormValidator(validationData, popupEditProfileForm)
-        editProfileValidation.enableValidation();
-    }
     // отображаем поп-ап
     openPopup(popupEditProfile)
 })
@@ -128,11 +103,6 @@ popupAddCardButton.addEventListener('click', function () {
     //сбрасываем значения инпутов
     popupTitleInput.value = '';
     popupPhotoLinkInput.value = '';
-    //настраиваем валидацию формочки добавления новой фото если она еще не инициализирована
-    if (!newPhotoValidation) {
-        newPhotoValidation = new FormValidator(validationData, popupAddCardForm)
-        newPhotoValidation.enableValidation()
-    }
     //отображаем форму
     openPopup(popupAddCard);
 });
@@ -143,7 +113,7 @@ popupAddCard.addEventListener('submit', function (evt) {
             name: popupTitleInput.value,
             link: popupPhotoLinkInput.value
         },
-        newCardTemplateId)
+        newCardTemplateId, zoomImage)
     //добавляем новую карточку из шаблона в контейнер
     addPhotoToContainer(newCard.generateCard())
     //закрываем поп-ап
@@ -162,7 +132,7 @@ closeAddCardButton.addEventListener('click', function () {
 
 // увеличение картинки--------------------------------------------------
 //обработчик события при нажатии на карточку для увеличения
-export function zoomImage(photoName, link) {
+function zoomImage(photoName, link) {
     popupZoomImageImg.src = link
     popupZoomImageImg.alt = photoName
     popupZoomImageCaption.textContent = photoName
@@ -177,7 +147,7 @@ closeZoomImageButton.addEventListener('click', function () {
 //вспомогательные функции------------------------------------------------
 // отображаем переданный в качестве параметра попап
 function openPopup(popup) {
-    popup.addEventListener('click', closePopupByBackgroundClick)
+    popup.addEventListener('mousedown', closePopupByBackgroundClick)
     document.addEventListener('keydown', closePopupByEscButton)
     popup.classList.add('popup_opened')
 }
