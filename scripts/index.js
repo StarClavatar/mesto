@@ -76,6 +76,8 @@ popupEditProfileButton.addEventListener('click', function () {
     // присваиваем значения полям ввода текущему значению
     popupProfileTitleInput.value = profileTitle.textContent
     popupProfileDescriptionInput.value = profileShortDescription.textContent
+    //тоглим кнопку
+    editProfileValidation.toggleButtonState();
     // отображаем поп-ап
     openPopup(popupEditProfile)
 })
@@ -103,6 +105,8 @@ popupAddCardButton.addEventListener('click', function () {
     //сбрасываем значения инпутов
     popupTitleInput.value = '';
     popupPhotoLinkInput.value = '';
+    //устанавливаем состояние кнопки 
+    newPhotoValidation.toggleButtonState();
     //отображаем форму
     openPopup(popupAddCard);
 });
