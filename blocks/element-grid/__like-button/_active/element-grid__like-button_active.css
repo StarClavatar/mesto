@@ -1,6 +1,0 @@
-.element-grid__like-button_active {
-    background-image: url(../../../../images/likeActive.svg);
-  }
-.element-grid__like-button_active:hover {
-  opacity: 1;
-}
