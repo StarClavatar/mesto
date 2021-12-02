@@ -15,7 +15,7 @@ module.exports = {
         publicPath: ''
     },
     mode: 'development', //добавили режим разработчика
-    devServer: {
+    devServer: {  
         //contentBase: path.resolve(__dirname, './dist'), // путь, куда "смотрит" режим разработчика
         static: {
             directory: path.resolve(__dirname, './dist'),
@@ -24,6 +24,7 @@ module.exports = {
         port: 8081, // порт, чтобы открывать сайт по адресу localhost:8081, но можно поменять порт
         open: true // сайт будет открываться сам при запуске npm run dev
     },
+    devtool: 'inline-source-map', //создаем source-map 
     module: {
         rules: [ // rules — это массив правил
             { // добавим в него объект правил для бабеля
