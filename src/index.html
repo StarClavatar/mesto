@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="pages/index.css"> -->
+    <!-- webpack будет подключать CSS из import'а в файле index.js -->
+    <title>Mesto Russia</title>
+</head>
+
+<body class="page">
+    <!-- заголовок -->
+    <header class="header">
+        <!-- нормальные имена файлов заменяем на  <%=require("./images/Vector.svg")%> для webpack-->
+        <!-- при сборке webpack будет такие ссылки менять на преобразованные имена файлов -->
+        <img src=<%=require("./images/Vector.svg")%> alt="логотип" class="header__logo">
+    </header>
+
+    <!-- основной контент -->
+    <main class="content">
+        <!-- секция профиля пользователя -->
+        <section class="profile">
+            <img src=<%=require("./images/image.png")%> alt="аватар" class="profile__avatar">
+            <div class="profile__info">
+                <div class="profile__info-name">
+                    <h1 class="profile__title">Жак-Ив Кусто</h1>
+                    <button type="button" class="profile__button profile__button_type_edit"
+                        title="Редактировать профиль" aria-label="Редактировать профиль"></button>
+                </div>
+                <p class="profile__short-description">Исследователь океана</p>
+            </div>
+            <button type="button" class="profile__button profile__button_type_add" title="Добавить фото"
+                aria-label="Добавить фото"></button>
+        </section>
+        <!-- секция с гридом всех фото -->
+        <section class="elements-grid">
+            <ul class="element-grid">
+                <!-- шаблон новой фото -->
+                <template id="element-grid-template">
+                    <li class="element-grid__item">
+                        <img class="element-grid__image" src=<%=require("./images/kama.jpeg")%> alt="">
+                        <div class="element-grid__info">
+                            <h2 class="element-grid__title">Гангстер со стажем</h2>
+                            <button class="element-grid__like-button" type="button"></button>
+                        </div>
+                        <button class="element-grid__remove-button" type="button"></button>
+                    </li>
+                </template>
+            </ul>
+        </section>
+    </main>
+
+    <!-- подвал странцы -->
+    <footer class="footer">
+        <p class="footer__copyright">&copy; 2020 Mesto Russia</p>
+    </footer>
+
+    <!-- редактирование профиля -->
+    <div class="popup popup_type_edit">
+        <div class="popup__container">
+            <form class="popup__input-form popup__form" name="edit-form" novalidate>
+                <!-- заголовок формы  -->
+                <h2 class="popup__title">Редактировать профиль</h2>
+                <!-- поле ввода с имененим профиля -->
+                <input id="name-input" class="popup__input popup__input_edit_title popup__input_error" name="username"
+                    type="text" placeholder="Имя" required minlength="2" maxlength="40">
+                <!-- подпись ошибки заполнения имени -->
+                <span id="name-input-error" class="popup__input-error">ошибка заполнения</span>
+                <!-- поле ввода описания профиля  -->
+                <input id="job-input" class="popup__input popup__input_edit_short-description popup__input_error"
+                    name="about" type="text" placeholder="Описание" required minlength="2" maxlength="200">
+                <!-- подпись ошибки заполнения описания профиля -->
+                <span id="job-input-error" class="popup__input-error">ошибка заполнения</span>
+                <!-- кнопка сохранить профиль -->
+                <button class="popup__button popup__submit-button" type="submit">Сохранить</button>
+            </form>
+            <!-- крестик закрытия формы редактирования профиля -->
+            <button type="button" class="popup__close-button"></button>
+        </div>
+    </div>
+
+    <!-- формочка для добавления нового места -->
+    <div class="popup popup_type_add">
+        <div class="popup__container">
+            <form class="popup__input-form popup__form" name="new-photo" novalidate>
+                <!-- заголовок формы -->
+                <h2 class="popup__title">Новое место</h2>
+                <!-- поле ввода названия -->
+                <input id="place-name-input" class="popup__input popup__input_edit_title popup__input_error" name="name"
+                    type="text" placeholder="Название места" required minlength="2" maxlength="30">
+                <!-- подпись с ошибкой заполнения названия фото -->
+                <span id="place-name-input-error" class="popup__input-error">ошибка заполнения</span>
+                <!-- поле ввода url-адреса картинки -->
+                <input id="place-img-input" class="popup__input popup__input_edit_short-description popup__input_error"
+                    name="link" type="url" placeholder="Ссылка на картинку" required>
+                <!-- подпись с ошибкой заполнения url-адреса  -->
+                <span id="place-img-input-error" class="popup__input-error">ошибка заполнения</span>
+                <!-- кнопка сохранить -->
+                <button class="popup__button popup__submit-button" type="submit">Сохранить</button>
+            </form>
+            <!-- крестик закрытия формы добавления фото -->
+            <button type="button" class="popup__close-button"></button>
+        </div>
+    </div>
+
+    <!-- формочка увеличения карточки -->
+    <div class="popup popup_zoom-image">
+        <figure class="popup__image-container">
+            <img class="popup__image" src=<%=require("./images/kama.jpeg")%> alt="Гангстер со стажем">
+            <figcaption class="popup__image-caption"></figcaption>
+            <button class="popup__close-button popup__close-button_place-image" type="button"></button>
+        </figure>
+    </div>
+
+    <!-- подключаем скрипт как модуль -->
+    <!-- <script type="module" src="./pages/index.js"></script> -->
+    <!-- webpack будет подключать CSS из import'а в файле index.js -->
+
+</body>
+
+</html>
