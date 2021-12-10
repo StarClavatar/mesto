@@ -36,10 +36,4 @@ export class PopupWithForm extends Popup {
         this._submitCallBack(this._getInputValues());
         this.close();
     }
-
-    _removeEventsListeners() {
-        super._removeEventsListeners();
-        //отписываемся по уникальному ID
-        this._popup.removeEventListener('submit', this._onSubmitBind);
-    }
 }

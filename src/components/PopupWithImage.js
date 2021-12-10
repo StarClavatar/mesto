@@ -6,6 +6,5 @@ export class PopupWithImage extends Popup {
         this._popup.querySelector('.popup__image').alt = name;
         this._popup.querySelector('.popup__image-caption').textContent = name;
         super.open();
-        this._popup.focus(); //надо для того, чтобы сработала клавиша esc для закрытия формы
     }
 }

@@ -11,7 +11,7 @@ export class Popup {
     }
 
     close() {
-        this._removeEventsListeners();
+        // this._removeEventsListeners();
         this._popup.classList.remove('popup_opened');
     }
 
@@ -32,17 +32,17 @@ export class Popup {
 
     setEventListeners() {
         this._closeByBackgroundBind = this._closeByBackground.bind(this);
-        this._popup.addEventListener('click', this._closeByBackgroundBind);
+        this._popup.addEventListener('mousedown', this._closeByBackgroundBind);
         this._closeButtonBind = this.close.bind(this);
         this._closeButton.addEventListener('click', this._closeButtonBind);
         this._handleEscClose();
     }
 
-    _removeEventsListeners() {
-        this._popup.removeEventListener('click', this._closeByBackgroundBind);
-        this._closeButton.removeEventListener('click', this._closeButtonBind);
-        this._popup.removeEventListener('keydown', this._escapeCloseBind);
-    }
+    // _removeEventsListeners() {
+    //     this._popup.removeEventListener('click', this._closeByBackgroundBind);
+    //     this._closeButton.removeEventListener('click', this._closeButtonBind);
+    //     document.removeEventListener('keydown', this._escapeCloseBind);
+    // }
     
 }
 
