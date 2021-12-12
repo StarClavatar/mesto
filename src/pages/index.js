@@ -76,14 +76,16 @@ popupEdit.setEventListeners();
 
 //создаём объект-формочку новой фото 
 const popupNewPhoto = new PopupWithForm(popupAddCardSelector, inputsValues => {
-    section.prependItem(generateCardMarkup(inputsValues[popupPhotoTitleInputId], 
+    section.prependwItem(generateCardMarkup(inputsValues[popupPhotoTitleInputId], 
                                        inputsValues[popupPhotoLinkInputId]));
 })
 popupNewPhoto.setEventListeners();
 
 //инициализируем формочку для зумирования карточек
-const pop = new PopupWithImage('.popup_zoom-image');
-pop.setEventListeners();
+const imagePopup = new PopupWithImage('.popup_zoom-image');
+imagePopup
+
+.setEventListeners();
 
 
 
@@ -119,5 +121,5 @@ function generateCardMarkup(name, link) {
 
 //колбаск зумирования карточки, который указывается в конструкторе карточки
 function zoomImage(name, link) {
-    pop.open(link, name);
+    imagePopup.open(link, name);
 }
