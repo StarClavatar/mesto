@@ -76,7 +76,7 @@ popupEdit.setEventListeners();
 
 //создаём объект-формочку новой фото 
 const popupNewPhoto = new PopupWithForm(popupAddCardSelector, inputsValues => {
-    section.prependwItem(generateCardMarkup(inputsValues[popupPhotoTitleInputId], 
+    section.prependItem(generateCardMarkup(inputsValues[popupPhotoTitleInputId], 
                                        inputsValues[popupPhotoLinkInputId]));
 })
 popupNewPhoto.setEventListeners();
