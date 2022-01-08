@@ -22,7 +22,10 @@
     <main class="content">
         <!-- секция профиля пользователя -->
         <section class="profile">
-            <img src=<%=require("./images/image.png")%> alt="аватар" class="profile__avatar">
+            <div class="profile__avatar-wrapper">
+                <img src=<%=require("./images/image.png")%> alt="аватар" class="profile__avatar">
+                <button type="button" class="profile__avatar-edit-button"></button>
+            </div>
             <div class="profile__info">
                 <div class="profile__info-name">
                     <h1 class="profile__title">Жак-Ив Кусто</h1>
@@ -44,6 +47,8 @@
                         <div class="element-grid__info">
                             <h2 class="element-grid__title">Гангстер со стажем</h2>
                             <button class="element-grid__like-button" type="button"></button>
+                            <span class="element-grid__like-counter">0</span>
+
                         </div>
                         <button class="element-grid__remove-button" type="button"></button>
                     </li>
@@ -105,6 +110,24 @@
         </div>
     </div>
 
+    <div class="popup popup_type_new-avatar">
+        <div class="popup__container">
+            <form class="popup__input-form popup__form" name="new-photo" novalidate>
+                <!-- заголовок формы -->
+                <h2 class="popup__title">Обновить аватар</h2>
+                <!-- поле ввода url-адреса картинки -->
+                <input id="place-img-input" class="popup__input popup__input_edit_short-description popup__input_error"
+                    name="link" type="url" placeholder="Ссылка на картинку" required>
+                <!-- подпись с ошибкой заполнения url-адреса  -->
+                <span id="place-img-input-error" class="popup__input-error">ошибка заполнения</span>
+                <!-- кнопка сохранить -->
+                <button class="popup__button popup__submit-button" type="submit">Сохранить</button>
+            </form>
+            <!-- крестик закрытия формы добавления фото -->
+            <button type="button" class="popup__close-button"></button>
+        </div>
+    </div>
+
     <!-- формочка увеличения карточки -->
     <div class="popup popup_zoom-image">
         <figure class="popup__image-container">
@@ -112,6 +135,19 @@
             <figcaption class="popup__image-caption"></figcaption>
             <button class="popup__close-button popup__close-button_place-image" type="button"></button>
         </figure>
+    </div>
+
+
+    <div class="popup popup_delete-confirm">
+        <div class="popup__container">
+            <form class="popup__input-form popup__form" name="delete_photo">
+                <!-- заголовок формы -->
+                <h2 class="popup__title popup__title_confirm-popup">Вы уверены?</h2>
+                <button class="popup__button " type="button">Да</button>
+            </form>
+            <!-- крестик закрытия формы добавления фото -->
+            <button type="button" class="popup__close-button"></button>
+        </div>
     </div>
 
     <!-- подключаем скрипт как модуль -->

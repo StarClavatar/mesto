@@ -11,6 +11,7 @@
     color: #FFFFFF;
     transition: 0.2s;
     border-radius: 2px;
+    margin-bottom: 36px;
 }
 
 .popup__button:hover {
