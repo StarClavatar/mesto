@@ -22,7 +22,7 @@ module.exports = {
         },
         compress: true, // это ускорит загрузку в режиме разработки
         port: 8081, // порт, чтобы открывать сайт по адресу localhost:8081, но можно поменять порт
-        open: true // сайт будет открываться сам при запуске npm run dev
+        open: false // сайт будет открываться сам при запуске npm run dev
     },
     devtool: 'inline-source-map', //создаем source-map 
     module: {

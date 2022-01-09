@@ -19,6 +19,9 @@ import {
 import {
     UserInfo
 } from '../components/UserInfo.js';
+import {
+    Api
+} from '../components/Api.js';
 
 import {
     newCardTemplateId,
@@ -26,68 +29,126 @@ import {
     initialCards,
     profileTitleSelector,
     profileShortSelector,
+    profilePhotoSelector,
     popupEditProfileButton,
     popupAddCardButton,
     popupEditProfileSelector,
     popupEditProfileNameId,
     popupEditProfileDescId,
     popupEditProfileForm,
+    popupProfilePhotoSelector,
+    popupProfilePhotoUrlSelector,
+    popupProfilePhotoForm,
+    ProfilePhotoEditButton,
     popupPhotoTitleInputId,
     popupPhotoLinkInputId,
     elementGridSelector,
     popupAddCardForm,
     popupAddCardSelector,
+    apiToken,
+    apiBaseUrl
 } from '../utils/constants.js';
+
+//создаём объект для работы с API
+const api = new Api({
+    baseUrl: apiBaseUrl,
+    headers: {
+        authorization: apiToken,
+        'Content-Type': 'application/json'
+    }
+});
+//объект с данными о профиле
+const userInfo = new UserInfo({
+    nameSelector: profileTitleSelector,
+    infoSelector: profileShortSelector,
+    photoSelector: profilePhotoSelector
+})
+
+//переменная для хранения профиля пользователя
+let userId
+
+//загружаем профиль пользователя с сервера
+api.getProfile() 
+.then(result => {
+    userId = result._id;
+    userInfo.setUserInfo(result.name, result.about);
+    userInfo.setUserPhoto(result.avatar);
+})
+.catch(err => { console.log(err) })
 
 // объект для валидации формочки редактирования профиля
 const editProfileValidation = new FormValidator(validationData, popupEditProfileForm);
 editProfileValidation.enableValidation();
 
+// объект для валидации формочки редактирования фото профиля
+const editProfilePhotoValidation = new FormValidator(validationData, popupProfilePhotoForm);
+editProfilePhotoValidation.enableValidation();
+
 // объект для валидации формочки добавления новой фото
 const newPhotoValidation = new FormValidator(validationData, popupAddCardForm);
 newPhotoValidation.enableValidation();
-
-//объект с данными о профиле
-const userInfo = new UserInfo({
-    nameSelector: profileTitleSelector,
-    infoSelector: profileShortSelector
-})
 
 //объект отвечающий за отрисовку карточек в нужном месте страницы
 const section = new Section({
         items: initialCards,
         renderer: item => {
-            section.appendItem(generateCardMarkup(item.name, item.link));
+            section.appendItem(generateCardMarkup(item.name, item.link, item.likes, item._id, item.owner._id));
         }
     },
     elementGridSelector);
 
-//рисуем все карточки
-section.renderItems();
+//загрузка и отрисовка карточек
+api.getInitialCards()
+    .then((result) => {
+        //рисуем все карточки
+        section.renderItems(result);
+    })
+    .catch((err) => console.log(err));
 
 //создаём объект-формочку редактирования профиля 
-const popupEdit = new PopupWithForm(popupEditProfileSelector, values => {
-    userInfo.setUserInfo(
-        values[popupEditProfileNameId],
-        values[popupEditProfileDescId]
-    )
+const popupEdit = new PopupWithForm(popupEditProfileSelector, (values) => {
+    popupEdit.renderLoadingStatus(true);
+    api.patchProfile(values[popupEditProfileNameId], values[popupEditProfileDescId])
+    .then(result => {
+        userInfo.setUserInfo(result.name, result.about);
+     })
+    .catch(err => { console.log(err) })
+    .finally(popupEdit.renderLoadingStatus(false));
 });
 popupEdit.setEventListeners();
 
+//создаём объект-формочку редактирования фото профиля 
+const popupProfilePhoto = new PopupWithForm(popupProfilePhotoSelector, (values) => {
+    popupEdit.renderLoadingStatus(true);
+    api.patchProfilePhoto(values[popupProfilePhotoUrlSelector])
+    .then(result => {
+        userInfo.setUserPhoto(result.avatar);
+     })
+    .catch(err => { console.log(err) })
+    .finally(popupEdit.renderLoadingStatus(false));
+});
+popupProfilePhoto.setEventListeners();
+
+
 //создаём объект-формочку новой фото 
 const popupNewPhoto = new PopupWithForm(popupAddCardSelector, inputsValues => {
-    section.prependItem(generateCardMarkup(inputsValues[popupPhotoTitleInputId], 
-                                       inputsValues[popupPhotoLinkInputId]));
+    //создаём новую карточку на сервере
+    api.createNewCard(inputsValues[popupPhotoTitleInputId], inputsValues[popupPhotoLinkInputId])
+        .then(result => {
+            section.prependItem(generateCardMarkup(
+                result.name,
+                result.link,
+                result.likes,
+                result._id,
+                result.owner._id))        
+        })
+        .catch(err=>{console.log(err)});
 })
 popupNewPhoto.setEventListeners();
 
 //инициализируем формочку для зумирования карточек
 const imagePopup = new PopupWithImage('.popup_zoom-image');
-imagePopup
-
-.setEventListeners();
-
-
+imagePopup.setEventListeners();
 
 //редактирование профиля---------------------------------------------
 //заполняем и отображаем форму редактирования профиля
@@ -102,6 +163,15 @@ popupEditProfileButton.addEventListener('click', () => {
     editProfileValidation.toggleButtonState();
 })
 
+//редактирование фото профиля---------------------------------------------
+//заполняем и отображаем форму редактирования фото профиля
+ProfilePhotoEditButton.addEventListener('click', () => {
+    //отображаем popup редактирования фото профиля
+    popupProfilePhoto.open();
+    //тоглим кнопку
+    editProfilePhotoValidation.toggleButtonState();
+})
+
 //добавление новых карточек-------------------------------------------------------    
 //отображаем поп-ап добавления новой карточки с обнулением полей ввода
 popupAddCardButton.addEventListener('click', function () {
@@ -110,12 +180,15 @@ popupAddCardButton.addEventListener('click', function () {
     popupNewPhoto.open();
 });
 
-//функция генерирует разметку карточки
-function generateCardMarkup(name, link) {
+//функция создаёт новую карточку в памяти и генерирует ее разметку
+function generateCardMarkup(name, link, likes=[], cardId='', ownerId=apiToken) {
     const card = new Card({
+        id: cardId,    
         name: name,
-        link: link
-    }, newCardTemplateId, zoomImage)
+        link: link,
+        likes: likes,
+        userId: ownerId
+    }, newCardTemplateId, zoomImage, likeCard, deleteCard, userId)
     return card.generateCard()
 }
 
@@ -123,3 +196,14 @@ function generateCardMarkup(name, link) {
 function zoomImage(name, link) {
     imagePopup.open(link, name);
 }
+
+//колбаск лайка карточки
+function likeCard(card) {
+    // imagePopup.open(link, name);
+}
+
+//колбаск удаления карточки
+function deleteCard(card) {
+    // imagePopup.open(link, name);
+}
+

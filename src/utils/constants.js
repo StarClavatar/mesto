@@ -14,7 +14,8 @@ const kama = new URL('.././images/kama.jpeg',
     import.meta.url);
 //
 
-export const initialCards = [{
+export const initialCards = [
+    {
         name: 'Xincun, Hainan',
         link: XinCun //теперь вместо url переменная, объявленая выше (необходимо для webpack)
     },
@@ -56,8 +57,10 @@ export const newCardTemplateId = '#element-grid-template'
 const profile = document.querySelector('.profile')
 export const profileTitleSelector = '.profile__title'
 export const profileShortSelector = '.profile__short-description'
+export const profilePhotoSelector ='.profile__avatar'
 export const profileTitle = profile.querySelector('.profile__title')
 export const popupEditProfileButton = profile.querySelector('.profile__button_type_edit')
+export const ProfilePhotoEditButton = profile.querySelector('.profile__avatar-edit-button')
 export const popupAddCardButton = profile.querySelector('.profile__button_type_add')
 
 //ProfileEditPopup
@@ -66,6 +69,12 @@ export const popupEditProfileNameId = 'name-input';
 export const popupEditProfileDescId = 'job-input';
 export const popupEditProfile = document.querySelector('.popup_type_edit')
 export const popupEditProfileForm = popupEditProfile.querySelector('form')
+
+//ProfilePhoto
+export const popupProfilePhotoSelector = '.popup_type_new-avatar'
+export const popupProfilePhoto = document.querySelector(popupProfilePhotoSelector)
+export const popupProfilePhotoForm = popupProfilePhoto.querySelector('form')
+export const popupProfilePhotoUrlSelector = 'profile-img-input'
 
 //elements grid
 export const elementGridSelector = '.element-grid'
@@ -83,3 +92,8 @@ export const popupZoomImage = document.querySelector('.popup_zoom-image')
 export const closeZoomImageButton = popupZoomImage.querySelector('.popup__close-button')
 export const popupZoomImageImg = popupZoomImage.querySelector('.popup__image')
 export const popupZoomImageCaption = popupZoomImage.querySelector('.popup__image-caption')
+
+//онстанты для работы с API
+export const cohortId = 'cohort-32';
+export const apiToken = 'ce5975c2-555f-46c5-8851-9175f75178d9';
+export const apiBaseUrl = `https://mesto.nomoreparties.co/v1/${cohortId}`
