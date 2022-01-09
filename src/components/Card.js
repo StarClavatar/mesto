@@ -61,7 +61,8 @@ export class Card {
         })
         // при клике на удаление вызываем у экземпляра карточки приватный метод _deleteCard
         this._DeleteButton.addEventListener('click', (el) => {
-            this._deleteCard(el);
+            // this._deleteCard(el);
+            this._handleCardDelete(this);
         })
         // при клике на картинку вызываем у экземпляра карточки приватный метод _zoomImage
         this._gridImage.addEventListener('click', () => {
@@ -78,7 +79,7 @@ export class Card {
     }
 
     // обработчик клика на кнопку удаления карточки
-    _deleteCard(el) {
+    deleteCard(el) {
         this._element.remove();
         this._element = null;
     }

@@ -45,9 +45,11 @@ import {
     elementGridSelector,
     popupAddCardForm,
     popupAddCardSelector,
+    popupDeleteCarSelector,
     apiToken,
     apiBaseUrl
 } from '../utils/constants.js';
+import { PopupConfirm } from '../components/PopupConfirm';
 
 //создаём объект для работы с API
 const api = new Api({
@@ -150,6 +152,17 @@ popupNewPhoto.setEventListeners();
 const imagePopup = new PopupWithImage('.popup_zoom-image');
 imagePopup.setEventListeners();
 
+//инициализируем формочку удаления карточки
+const popupConfirmDeleteCard = new PopupConfirm(popupDeleteCarSelector, card => {
+    api.deleteCard(card._id)
+        .then(result => {
+            card.deleteCard();
+            popupConfirmDeleteCard.close();
+        })
+        .catch(err=>{console.log(err)});
+})
+popupConfirmDeleteCard.setEventListeners();
+
 //редактирование профиля---------------------------------------------
 //заполняем и отображаем форму редактирования профиля
 popupEditProfileButton.addEventListener('click', () => {
@@ -204,6 +217,6 @@ function likeCard(card) {
 
 //колбаск удаления карточки
 function deleteCard(card) {
-    // imagePopup.open(link, name);
+    popupConfirmDeleteCard.open(card);
 }
 

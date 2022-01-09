@@ -76,6 +76,7 @@ export const popupProfilePhoto = document.querySelector(popupProfilePhotoSelecto
 export const popupProfilePhotoForm = popupProfilePhoto.querySelector('form')
 export const popupProfilePhotoUrlSelector = 'profile-img-input'
 
+
 //elements grid
 export const elementGridSelector = '.element-grid'
 
@@ -87,13 +88,16 @@ export const popupAddCardForm = popupAddCard.querySelector('form')
 export const popupPhotoTitleInputId = 'place-name-input'
 export const popupPhotoLinkInputId = 'place-img-input'
 
+//форма подтверждения удаления карточки
+export const popupDeleteCarSelector = '.popup_delete-confirm'
+
 // zoomImagePopup
 export const popupZoomImage = document.querySelector('.popup_zoom-image')
 export const closeZoomImageButton = popupZoomImage.querySelector('.popup__close-button')
 export const popupZoomImageImg = popupZoomImage.querySelector('.popup__image')
 export const popupZoomImageCaption = popupZoomImage.querySelector('.popup__image-caption')
 
-//онстанты для работы с API
+//константы для работы с API
 export const cohortId = 'cohort-32';
 export const apiToken = 'ce5975c2-555f-46c5-8851-9175f75178d9';
 export const apiBaseUrl = `https://mesto.nomoreparties.co/v1/${cohortId}`
