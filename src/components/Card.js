@@ -1,9 +1,15 @@
 export class Card {
-    constructor(data, templateSelector, handleCardClick) {
-        this._name = data.name
-        this._link = data.link
-        this._templateSelector = templateSelector
-        this._handleCardClick = handleCardClick
+    constructor(data, templateSelector, handleCardClick, handleCardLike, handleCardDelete, myId) {
+        this._id = data.id;
+        this._name = data.name;
+        this._link = data.link;
+        this._userId = data.userId;
+        this._likes = data.likes;
+        this._templateSelector = templateSelector;
+        this._handleCardClick = handleCardClick;
+        this._handleCardLike = handleCardLike;
+        this._handleCardDelete = handleCardDelete;
+        this._myId = myId;
     }
 
     _getTemplate() {
@@ -23,17 +29,25 @@ export class Card {
         this._element = this._getTemplate();
         //запомним элемент картинки в приватной переменной 
         this._gridImage = this._element.querySelector('.element-grid__image')
-        //найдем попап для увеличения картинки 
-        this._popupZoomImageImg = document.querySelector('.popup_zoom-image')
-
+        //запомним элемент с кнопкой лайка карточки
+        this._likeButton=this._element.querySelector('.element-grid__like-button');
+        //запомним элемент с кнопкой удаления карточки
+        this._DeleteButton = this._element.querySelector('.element-grid__remove-button');            
+        //запомним элемент с количеством лайков
+        this._LikesCount = this._element.querySelector('.element-grid__like-counter');            
+        
         //добавим обработчики
         this._setEventListeners();
 
         // Добавим данные для картинки
-        this._gridImage.src = this._link
-        this._gridImage.alt = this._name
+        this._gridImage.src = this._link;
+        this._gridImage.alt = this._name;
         //подпишем карточку
-        this._element.querySelector('.element-grid__title').textContent = this._name
+        this._element.querySelector('.element-grid__title').textContent = this._name;
+        //поставим количество лайков
+        this._LikesCount.textContent = this._likes.length;
+        //скроем кнопку удаления, если карточка не наша
+        if (this._userId !== this._myId) { this._DeleteButton.style.display = 'none' };
 
         // Вернём элемент наружу
         return this._element;
@@ -42,12 +56,13 @@ export class Card {
     //подписка на необходимые события карточки
     _setEventListeners() {
         //при клике на лайк вызываем у экземпляра карточки приватный метод _likeCard  
-        this._element.querySelector('.element-grid__like-button').addEventListener('click', (el) => {
+        this._likeButton.addEventListener('click', (el) => {
             this._likeCard(el);
         })
         // при клике на удаление вызываем у экземпляра карточки приватный метод _deleteCard
-        this._element.querySelector('.element-grid__remove-button').addEventListener('click', (el) => {
-            this._deleteCard(el);
+        this._DeleteButton.addEventListener('click', (el) => {
+            // this._deleteCard(el);
+            this._handleCardDelete(this);
         })
         // при клике на картинку вызываем у экземпляра карточки приватный метод _zoomImage
         this._gridImage.addEventListener('click', () => {
@@ -64,7 +79,7 @@ export class Card {
     }
 
     // обработчик клика на кнопку удаления карточки
-    _deleteCard(el) {
+    deleteCard(el) {
         this._element.remove();
         this._element = null;
     }
