@@ -14,6 +14,14 @@ export class Api {
     //загрузка данных профиля
     getProfile() {
         return fetch(
+<<<<<<< HEAD
+                `${this._baseUrl}/users/me`, {
+                    method: 'GET',
+                    headers: this._headers
+                }
+            )
+            .then(this._checkResponse);
+=======
             `${this._baseUrl}/users/me`,
             {
                 method: 'GET',
@@ -21,11 +29,39 @@ export class Api {
             }
         )
         .then(this._checkResponse);
+>>>>>>> 62f5bc51cb8b410dffc78068b3504b84469d0c06
     }
 
     // обновление данных пользоателя
     patchProfile(name, about) {
         return fetch(
+<<<<<<< HEAD
+                `${this._baseUrl}/users/me`, {
+                    method: 'PATCH',
+                    headers: this._headers,
+                    body: JSON.stringify({
+                        name: name,
+                        about: about
+                    })
+                }
+            )
+            .then(this._checkResponse);
+    }
+
+    // обновление фото пользоателя
+    patchProfilePhoto(link) {
+        return fetch(
+                `${this._baseUrl}/users/me/avatar`, {
+                    method: 'PATCH',
+                    headers: this._headers,
+                    body: JSON.stringify({
+                        avatar: link
+                    })
+                }
+            )
+            .then(this._checkResponse);
+    }
+=======
             `${this._baseUrl}/users/me`,
             {
                 method: 'PATCH',
@@ -51,11 +87,20 @@ export class Api {
         )
         .then(this._checkResponse);
     } 
+>>>>>>> 62f5bc51cb8b410dffc78068b3504b84469d0c06
 
 
     //запрашиваем массив карточек с сервера
     getInitialCards() {
         return fetch(
+<<<<<<< HEAD
+                `${this._baseUrl}/cards`, {
+                    method: 'GET',
+                    headers: this._headers
+                }
+            )
+            .then(this._checkResponse);
+=======
             `${this._baseUrl}/cards`,
             {
                 method: 'GET',
@@ -63,11 +108,51 @@ export class Api {
             }
         )
         .then(this._checkResponse);
+>>>>>>> 62f5bc51cb8b410dffc78068b3504b84469d0c06
     }
 
     //создаём новую карточку
     createNewCard(name, link) {
         return fetch(
+<<<<<<< HEAD
+                `${this._baseUrl}/cards`, {
+                    method: 'POST',
+                    headers: this._headers,
+                    body: JSON.stringify({
+                        name: name,
+                        link: link
+                    })
+                }
+            )
+            .then(this._checkResponse);
+    }
+
+    like(id) {
+        return fetch(this._url + `/cards/likes/${id}`, {
+                method: 'PUT',
+                headers: this._headers
+            })
+            .then(this._checkResponse)
+    }
+
+    dislike(id) {
+        return fetch(this._url + `/cards/likes/${id}`, {
+                method: 'DELETE',
+                headers: this._headers
+            })
+            .then(this._checkResponse)
+    }
+
+
+    deleteCard(cardId) {
+        return fetch(
+                `${this._baseUrl}/cards/${cardId}`, {
+                    method: 'DELETE',
+                    headers: this._headers
+                }
+            )
+            .then(this._checkResponse);
+=======
             `${this._baseUrl}/cards`,
             {
                 method: 'POST',
@@ -91,6 +176,7 @@ export class Api {
             }
         )
         .then(this._checkResponse);
+>>>>>>> 62f5bc51cb8b410dffc78068b3504b84469d0c06
     }
 
     //обновляем статус карточки

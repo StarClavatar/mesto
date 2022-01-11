@@ -2,9 +2,15 @@
     font-size  : 42px;
     font-weight: 500;
     line-height: 48px;
+<<<<<<< HEAD
     margin     : 0 18px 16px 0;
     max-width  : 294px;
     word-wrap  : break-word;
+=======
+    margin: 0 18px 16px 0;
+    max-width: 294px;
+    word-wrap: break-word;
+>>>>>>> dd570ff662710848623b0d00b82ed67d9edbab68
 }
 
 @media screen and (max-width: 879px) {
