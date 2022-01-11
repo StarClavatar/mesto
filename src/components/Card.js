@@ -44,20 +44,40 @@ export class Card {
         this._gridImage.alt = this._name;
         //подпишем карточку
         this._element.querySelector('.element-grid__title').textContent = this._name;
-        //поставим количество лайков
-        this._LikesCount.textContent = this._likes.length;
+        // зажигаем "сердечко", если карточка лайкнута текущим пользователем
+        this.renderLikeStatus();
+        //напишем кол-во лайков
+        this.renderLikesCount();    
         //скроем кнопку удаления, если карточка не наша
         if (this._userId !== this._myId) { this._DeleteButton.style.display = 'none' };
-
         // Вернём элемент наружу
         return this._element;
+    }
+
+    //пределяем лайкнута ли карточка текущим пользователем
+    isLiked() {
+        let currentUserId = this._myId;
+        return this._likes.some(item => item._id == currentUserId);
+    }
+
+    //отображаем лайк текущего пользователя
+    renderLikeStatus() {
+        this.isLiked() ?
+            this._likeButton.classList.add('element-grid__like-button_active') :
+            this._likeButton.classList.remove('element-grid__like-button_active')
+        }
+
+    //поставим количество лайков
+    renderLikesCount() {
+        this._LikesCount.textContent = this._likes.length;
     }
 
     //подписка на необходимые события карточки
     _setEventListeners() {
         //при клике на лайк вызываем у экземпляра карточки приватный метод _likeCard  
         this._likeButton.addEventListener('click', (el) => {
-            this._likeCard(el);
+            // this._likeCard(el);
+            this._handleCardLike(this);
         })
         // при клике на удаление вызываем у экземпляра карточки приватный метод _deleteCard
         this._DeleteButton.addEventListener('click', (el) => {
@@ -68,7 +88,6 @@ export class Card {
         this._gridImage.addEventListener('click', () => {
             this._handleCardClick(this._name, this._link)
         })
-
     }
 
     //реализуем приватные методы обработки событий---------------------------------------------

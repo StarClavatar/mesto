@@ -69,15 +69,6 @@ const userInfo = new UserInfo({
 //переменная для хранения профиля пользователя
 let userId
 
-//загружаем профиль пользователя с сервера
-api.getProfile() 
-.then(result => {
-    userId = result._id;
-    userInfo.setUserInfo(result.name, result.about);
-    userInfo.setUserPhoto(result.avatar);
-})
-.catch(err => { console.log(err) })
-
 // объект для валидации формочки редактирования профиля
 const editProfileValidation = new FormValidator(validationData, popupEditProfileForm);
 editProfileValidation.enableValidation();
@@ -99,13 +90,18 @@ const section = new Section({
     },
     elementGridSelector);
 
-//загрузка и отрисовка карточек
-api.getInitialCards()
-    .then((result) => {
+//загружаем профиль пользователя и карточки 
+Promise.all([api.getProfile(), api.getInitialCards()])
+    .then(([profile, cards]) => {
+        //отображаем информацию профиля    
+        userId = profile._id;
+        userInfo.setUserInfo(profile.name, profile.about);
+        userInfo.setUserPhoto(profile.avatar);
+
         //рисуем все карточки
-        section.renderItems(result);
+        section.renderItems(cards);
     })
-    .catch((err) => console.log(err));
+    .catch(err => { console.log(err) }); 
 
 //создаём объект-формочку редактирования профиля 
 const popupEdit = new PopupWithForm(popupEditProfileSelector, (values) => {
@@ -121,13 +117,13 @@ popupEdit.setEventListeners();
 
 //создаём объект-формочку редактирования фото профиля 
 const popupProfilePhoto = new PopupWithForm(popupProfilePhotoSelector, (values) => {
-    popupEdit.renderLoadingStatus(true);
+    popupProfilePhoto.renderLoadingStatus(true);
     api.patchProfilePhoto(values[popupProfilePhotoUrlSelector])
     .then(result => {
         userInfo.setUserPhoto(result.avatar);
      })
     .catch(err => { console.log(err) })
-    .finally(popupEdit.renderLoadingStatus(false));
+    .finally(popupProfilePhoto.renderLoadingStatus(false));
 });
 popupProfilePhoto.setEventListeners();
 
@@ -135,6 +131,7 @@ popupProfilePhoto.setEventListeners();
 //создаём объект-формочку новой фото 
 const popupNewPhoto = new PopupWithForm(popupAddCardSelector, inputsValues => {
     //создаём новую карточку на сервере
+    popupNewPhoto.renderLoadingStatus(true);
     api.createNewCard(inputsValues[popupPhotoTitleInputId], inputsValues[popupPhotoLinkInputId])
         .then(result => {
             section.prependItem(generateCardMarkup(
@@ -144,7 +141,8 @@ const popupNewPhoto = new PopupWithForm(popupAddCardSelector, inputsValues => {
                 result._id,
                 result.owner._id))        
         })
-        .catch(err=>{console.log(err)});
+        .catch(err => { console.log(err) })
+        .finally(popupNewPhoto.renderLoadingStatus(false));
 })
 popupNewPhoto.setEventListeners();
 
@@ -212,7 +210,13 @@ function zoomImage(name, link) {
 
 //колбаск лайка карточки
 function likeCard(card) {
-    // imagePopup.open(link, name);
+    api.updateLikeStatus(card._id, card.isLiked())
+    .then(result => {
+        card._likes = result.likes;
+        card.renderLikeStatus();
+        card.renderLikesCount();
+    })
+    .catch(err=>{console.log(err)})
 }
 
 //колбаск удаления карточки

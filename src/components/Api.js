@@ -81,7 +81,7 @@ export class Api {
         .then(this._checkResponse);
     }
 
-    
+    //удаление карточки
     deleteCard(cardId) {
         return fetch(
             `${this._baseUrl}/cards/${cardId}`,
@@ -93,4 +93,38 @@ export class Api {
         .then(this._checkResponse);
     }
 
+    //обновляем статус карточки
+    updateLikeStatus(cardId, isLiked) {
+        if (isLiked) {
+            return this._removeLike(cardId);        
+        } else {
+            return this._addLike(cardId);
+        }
+    }
+
+    //установить лайк на карточку
+    _addLike(cardId) {
+        return fetch(
+            `${this._baseUrl}/cards/${cardId}/likes`,
+            {
+                method: 'PUT',
+                headers: this._headers
+            }
+        )
+        .then(this._checkResponse);
+    }
+
+    //снять лайк с карточки
+    _removeLike(cardId) {
+        return fetch(
+            `${this._baseUrl}/cards/${cardId}/likes`,
+            {
+                method: 'DELETE',
+                headers: this._headers
+            }
+        )
+        .then(this._checkResponse);
+    }
+
+    
 }
