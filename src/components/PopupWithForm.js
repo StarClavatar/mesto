@@ -36,7 +36,7 @@ export class PopupWithForm extends Popup {
 
     renderLoadingStatus(isLoading) {
         if (isLoading) {
-            this._submitButton.textContent = 'Сохраниеююю';
+            this._submitButton.textContent = 'Сохрание...';
         } else {
             this._submitButton.textContent = this._submitText;
         }
