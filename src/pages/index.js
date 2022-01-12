@@ -107,11 +107,12 @@ Promise.all([api.getProfile(), api.getInitialCards()])
 const popupEdit = new PopupWithForm(popupEditProfileSelector, (values) => {
     popupEdit.renderLoadingStatus(true);
     api.patchProfile(values[popupEditProfileNameId], values[popupEditProfileDescId])
-    .then(result => {
-        userInfo.setUserInfo(result.name, result.about);
-     })
-    .catch(err => { console.log(err) })
-    .finally(popupEdit.renderLoadingStatus(false));
+        .then(result => {
+            userInfo.setUserInfo(result.name, result.about);
+            popupEdit.close();
+        })
+        .catch(err => { console.log(err) })
+        .finally(() => { popupEdit.renderLoadingStatus(false); });
 });
 popupEdit.setEventListeners();
 
@@ -121,9 +122,10 @@ const popupProfilePhoto = new PopupWithForm(popupProfilePhotoSelector, (values) 
     api.patchProfilePhoto(values[popupProfilePhotoUrlSelector])
     .then(result => {
         userInfo.setUserPhoto(result.avatar);
+        popupProfilePhoto.close();
      })
     .catch(err => { console.log(err) })
-    .finally(popupProfilePhoto.renderLoadingStatus(false));
+        .finally(() => { popupProfilePhoto.renderLoadingStatus(false) });
 });
 popupProfilePhoto.setEventListeners();
 
@@ -139,10 +141,11 @@ const popupNewPhoto = new PopupWithForm(popupAddCardSelector, inputsValues => {
                 result.link,
                 result.likes,
                 result._id,
-                result.owner._id))        
+                result.owner._id));
+            popupNewPhoto.close();
         })
         .catch(err => { console.log(err) })
-        .finally(popupNewPhoto.renderLoadingStatus(false));
+        .finally(()=> { popupNewPhoto.renderLoadingStatus(false) });
 })
 popupNewPhoto.setEventListeners();
 

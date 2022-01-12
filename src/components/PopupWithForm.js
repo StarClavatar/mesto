@@ -44,6 +44,6 @@ export class PopupWithForm extends Popup {
 
     _onSubmit() {
         this._submitCallBack(this._getInputValues());
-        this.close();
+        // this.close();
     }
 }
